@@ -10,9 +10,6 @@
  * It has a previous and next button to switch month views to see
  * the calendars of each month.
  * 
- * If I have time I will add functionality to specify a month and year
- * as opposed to just providing buttons to navigate the calendar.
- * 
  * Documentation and comments are added as much as possible for
  * the benefit of AICSC members.
  * 
@@ -33,8 +30,16 @@ public class Main {
 	// Final calendar instance for the current time and date
 	public static final Calendar calendarCurrent = Calendar.getInstance();
 	// Values used to switch calendar view
-	private static int month;
-	private static int year;
+	public static int month;
+	public static int year;
+
+	// Calendar instance for the selected calendar view
+	public static final Calendar calendarViewed = Calendar.getInstance();
+
+	// Instantiate MonthTitle which stores the days of the month
+	public static final MonthTitle monthTitle = new MonthTitle(calendarViewed);
+	// Instantiate MonthBody which stores the days of the month
+	public static final MonthBody monthBody = new MonthBody(calendarViewed);
 
 	public static void main(String[] args) {
 		/* ActionListener to perform actions for this calendar's Timer */
@@ -52,9 +57,6 @@ public class Main {
 		 * specified action
 		 */
 		Timer timer = new Timer(1000, listener);
-
-		// Calendar instance for the selected calendar view
-		Calendar calendarViewed = Calendar.getInstance();
 
 		// Make calenar's time equal to calendarToday
 		calendarViewed.setTime(calendarCurrent.getTime());
@@ -97,16 +99,13 @@ public class Main {
 
 		// Instantiate and add components to the frame
 		JPanel upperPanel = new JPanel(new BorderLayout());
-		final MonthTitle monthTitle = new MonthTitle(calendarViewed);
+
 		upperPanel.add(jbPrevMonth, BorderLayout.WEST);
 		upperPanel.add(monthTitle, BorderLayout.CENTER);
 		upperPanel.add(jbNextMonth, BorderLayout.EAST);
 
 		// Add the upper components to the northern region of the frame
 		frame.add(upperPanel, BorderLayout.NORTH);
-
-		// Instantiate MonthBody which stores the days of the month
-		final MonthBody monthBody = new MonthBody(calendarViewed);
 
 		// Add the MonthBody to the frame (positioned at the center)
 		frame.add(monthBody, BorderLayout.CENTER);

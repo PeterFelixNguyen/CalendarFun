@@ -1,7 +1,10 @@
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -44,6 +47,58 @@ public class MonthTitle extends JPanel {
 
 		// Add the JLabel to this JPanel
 		add(jlMonth);
+
+		// Add event-handling
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent me) {
+				DatePicker datePicker = new DatePicker();
+
+				/*
+				 * showOptionDialog returns a value indicating the option that
+				 * user pick. The second argument adds datePicker to the
+				 * JOptionPane and the fourth argument specify the button types.
+				 * 
+				 * The other arguments are not as important
+				 */
+				int option = JOptionPane.showOptionDialog(null, datePicker,
+						"Pick Date", JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+				// If the option returned is the OK option, then update the
+				// monthBody and monthTitle
+				if (option == JOptionPane.OK_OPTION) {
+					int month = datePicker.getMonth();
+					int year = datePicker.getYear();
+
+					// If the year is within range, update the calendar view
+					if (year > 1600 && year < 9999) {
+						Main.monthBody.update(month, year);
+						Main.monthTitle.update(month, year);
+					} else {
+						// if the year is not within range, do nothing and
+						// notify the user to pick an appropriate year
+						JOptionPane.showMessageDialog(null,
+								"Enter a year between 1600 and 9999", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+
+			// Simple animated button effect on hover in
+			@Override
+			public void mouseEntered(MouseEvent me) {
+				MonthTitle monthTitle = (MonthTitle) me.getSource();
+				monthTitle.setBackground(CalendarColors.COLOR_2);
+			}
+
+			// Simple animated button effect on hover out
+			@Override
+			public void mouseExited(MouseEvent me) {
+				MonthTitle monthTitle = (MonthTitle) me.getSource();
+				monthTitle.setBackground(CalendarColors.COLOR_1);
+			}
+		});
 	}
 
 	/**
