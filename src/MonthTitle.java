@@ -68,13 +68,15 @@ public class MonthTitle extends JPanel {
 				// If the option returned is the OK option, then update the
 				// monthBody and monthTitle
 				if (option == JOptionPane.OK_OPTION) {
-					int month = datePicker.getMonth();
-					int year = datePicker.getYear();
-
 					// If the year is within range, update the calendar view
-					if (year > 1600 && year < 9999) {
-						Main.monthBody.update(month, year);
-						Main.monthTitle.update(month, year);
+					if (datePicker.getYear() > 1600
+							&& datePicker.getMonth() < 9999) {
+						// Only update month and year if within range
+						Main.month = datePicker.getMonth();
+						Main.year = datePicker.getYear();
+
+						Main.monthBody.update(Main.month, Main.year);
+						Main.monthTitle.update(Main.month, Main.year);
 					} else {
 						// if the year is not within range, do nothing and
 						// notify the user to pick an appropriate year
